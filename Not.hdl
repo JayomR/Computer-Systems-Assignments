@@ -1,0 +1,20 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Not.hdl
+
+/**
+ * Not gate:
+ * out = not in
+ */
+
+CHIP Not {
+    IN in;
+    OUT out;
+
+    PARTS:
+    // A Nand gate returns NOT(a AND b).
+    // So by feeding the same input into both 'a' and 'b' means that both a and b will either be 0 or 1.
+    // Therefore, this would follow NOT(in), which is the NOT gate.
+    Nand(a = in, b = in, out = out);
+}
