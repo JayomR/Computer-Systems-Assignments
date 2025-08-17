@@ -1,0 +1,32 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux4Way.hdl
+
+/**
+ * 4-way demultiplexor:
+ * {a, b, c, d} = {in, 0, 0, 0} if sel == 00
+ *                {0, in, 0, 0} if sel == 01
+ *                {0, 0, in, 0} if sel == 10
+ *                {0, 0, 0, in} if sel == 11
+ */
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // The truth table can be split into a top part (where the most significant bit of sel is 0), and a bottom part (where the most significant bit is 1). 
+    // This can be put through a DMux chip, that would help to split the table. The output of this can be run through another DMux chip to decide between a or b (top)
+    // or c or d(bottom).
+
+    DMux(in = in, sel = sel[1], a = top, b = bottom);
+
+    // For example, if sel = 00, sel[1] = 0, so the DMux would output a, labelled as top. Then the following DMux chip will be run (as in = top), and since
+    // sel[0] = 0 in this example, the Dmux chip will output a, which is wired to the a output pin of the DMux4Way.
+
+    DMux(in = top, sel = sel[0], a = a, b = b);
+
+    // DMux chip if the bottom of the truth table is accessed.
+    DMux(in = bottom, sel = sel[0], a = c, b = d);
+}
